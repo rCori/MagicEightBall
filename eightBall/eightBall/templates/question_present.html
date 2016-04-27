@@ -1,0 +1,21 @@
+<!-- question_present.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h1> Present </h1>
+
+{{ queryRow.title }}
+
+<script src="{% static "js/yesNoRedirect.js" %}" type="text/javascript"> </script>
+
+<button onclick="myFunctionYes(yesURL)">Yes</button>
+<button onclick="myFunctionNo(noURL)">No</button>
+
+
+<script>
+	yesURL = "{% url 'submit' queryRow.id 'yes' %}";
+	noURL = "{% url 'submit' queryRow.id 'no' %}";
+</script>
+
+{% endblock content %}

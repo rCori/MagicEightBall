@@ -1,0 +1,10 @@
+<!-- question_index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+{{ block.super }}
+
+<a href={% url 'create' %}>Ask Question</a>
+<a href={% url 'present' %}>Answer Question</a>
+
+{% endblock content %}

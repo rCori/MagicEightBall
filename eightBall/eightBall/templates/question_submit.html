@@ -1,0 +1,13 @@
+<!-- question_submit.html -->
+{% extends "base.html" %}
+
+{% block content %}
+{{ block.super }}
+<h1> Submit </h1>
+
+<p> Answered {{answer}} to question: </p>
+<p>{{ queryRow.title }}</p>
+
+<a href={% url 'index' %}>Home</a>
+
+{% endblock content %}
