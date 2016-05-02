@@ -8,8 +8,11 @@ class QuestionManager(models.Manager):
 	#Gets a random row from the table
 	def random(self):
 		count = Question.objects.all().count()
-		random_index = random.randint(0, count - 1)
-		return self.all()[random_index]
+		if count == 0:
+			return None
+		else:
+			random_index = random.randint(0, count - 1)
+			return self.all()[random_index]
 		
 		
 class Question(models.Model):

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from .forms import QuestionForm
 from .models import Question, Answered
@@ -26,9 +26,10 @@ def question_present(request, id=None):
 	queryRow = 0
 	if id==None:
 		queryRow = Question.objects.random()
+		if queryRow == None:
+			raise Http404("There are no questions to show")
 	else:
 		queryRow = get_object_or_404(Question, id=id)
-		queryRow = Question.objects.random()
 	context = {
 		"queryRow":queryRow
 	}
