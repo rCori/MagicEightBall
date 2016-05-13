@@ -67,6 +67,23 @@ def question_submit(request, id, answer):
 	return render(request, "question_submit.html", context)
 
 
+"""
+#Create a user account
+def new_user(request):
+	form = UserForm(request.POST or None, request.FILES or None)
+	if form.is_valid():
+		instance = form.save(commit=False)
+		instance.user = request.user
+		instance.save()
+		return HttpResponseRedirect(reverse('index'))
+	context = {
+		"form":form
+	}
+	return render(request, "new_user.html", context)
+"""
+	
+
+
 
 
 	

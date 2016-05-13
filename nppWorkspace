@@ -34,6 +34,10 @@
                 <File name="eightBall\eightBall\templates\question_present.html" />
                 <File name="eightBall\eightBall\templates\question_submit.html" />
                 <File name="eightBall\eightBall\templates\question_index.html" />
+                <Folder name="registration">
+                    <File name="eightBall\eightBall\templates\registration\login.html" />
+                </Folder>
+                <File name="eightBall\eightBall\templates\new_user.html" />
             </Folder>
             <Folder name="static">
                 <Folder name="css" />

@@ -1,8 +1,12 @@
 from django.db import models
+from django.conf import settings
 from django.core.urlresolvers import reverse
 import random
 
-# Create your models here.
+def get_user_default_id():
+    return 1
+
+# Create your models here
 
 class QuestionManager(models.Manager):
 	#Gets a random row from the table
@@ -22,6 +26,7 @@ class Question(models.Model):
 	yesCount = models.IntegerField(default=0)
 	noCount = models.IntegerField(default=0)
 	objects = QuestionManager()
+	user = models.ForeignKey(settings.AUTH_USER_MODEL,default=get_user_default_id)
 	
 	def __unicode__(self):
 		return self.title
@@ -39,6 +44,7 @@ class Answered(models.Model):
 	totalAnswers = models.IntegerField()
 	yesCount = models.IntegerField()
 	noCount = models.IntegerField()
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, default=get_user_default_id)
 	
 	def __unicode__(self):
 		return self.title
