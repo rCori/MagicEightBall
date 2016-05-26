@@ -15,13 +15,23 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import url, include
-from django.contrib import admin
 from django.conf.urls.static import static
+from django.views.generic.edit import CreateView
+from django.contrib import admin
+from django.contrib.auth import views
+from django.contrib.auth.forms import UserCreationForm
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	url(r'^questionApp/', include("questionApp.urls")),
+	url(r'^login/$', views.login, {'template_name': 'registration/login.html'}),
+	url(r'^logout/$', views.logout, {'next_page': '/questionApp/'}),
+	url(r'^register/', CreateView.as_view(
+		template_name='registration/register.html',
+		form_class=UserCreationForm,
+		success_url='/questionApp/'
+	)),
 ]
 
 if settings.DEBUG:

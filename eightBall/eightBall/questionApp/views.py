@@ -3,11 +3,13 @@ from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from .forms import QuestionForm
 from .models import Question, Answered
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def question_index(request):
 	return render(request, "question_index.html")
 
+@login_required(login_url="login/")
 def question_create(request):
 	form = QuestionForm(request.POST or None, request.FILES or None)
 	#If the request is a POST then the form would be valid
@@ -65,30 +67,3 @@ def question_submit(request, id, answer):
 		"queryRow": queryRow,
 	}
 	return render(request, "question_submit.html", context)
-
-
-#Create a user account
-def new_user(request):
-	form = UserForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		instance = form.save(commit=False)
-		instance.user = request.user
-		instance.save()
-		return HttpResponseRedirect(reverse('index'))
-	context = {
-		"form":form
-	}
-	return render(request, "new_user.html", context)
-
-		
-
-
-
-
-	
-	
-	
-		
-		
-
-	

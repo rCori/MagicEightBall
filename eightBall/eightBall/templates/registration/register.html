@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ block.super }}
+<h1> Make User </h1>
+
+    <h2>Create an account</h2>
+
+    <form action = "/register/" method = "post">{% csrf_token %}
+    {{form}}
+
+    <input type="submit" value="Create Account" />
+
+    </form>
+{% endblock content %}
