@@ -7,12 +7,12 @@ question_index,
 question_create,
 question_present,
 question_submit,
-#new_user,
+new_user,
 )
 
 urlpatterns = [
 	url(r'^$', question_index, name='index'),
-	#url(r'^newuser/$', new_user, name='new_user'),
+	url(r'^newuser/$', new_user, name='new_user'),
 	url(r'^create/$', question_create, name='create'),
 	url(r'^present/$', question_present, name='present'),
 	url(r'^login/$', login),

@@ -1,10 +1,16 @@
 <!-- question_index.html -->
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 {{ block.super }}
 
+<link rel="stylesheet" type="text/css" href="{% static "css/indexStyle.css" %}">
+
 <a href={% url 'create' %}>Ask Question</a>
 <a href={% url 'present' %}>Answer Question</a>
+
+
+<div id="reactContent"></div>
 
 {% endblock content %}

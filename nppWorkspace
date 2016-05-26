@@ -40,9 +40,12 @@
                 <File name="eightBall\eightBall\templates\new_user.html" />
             </Folder>
             <Folder name="static">
-                <Folder name="css" />
+                <Folder name="css">
+                    <File name="eightBall\eightBall\static\css\indexStyle.css" />
+                </Folder>
                 <Folder name="js">
                     <File name="eightBall\eightBall\static\js\yesNoRedirect.js" />
+                    <File name="eightBall\eightBall\static\js\testReact.js" />
                 </Folder>
             </Folder>
         </Folder>

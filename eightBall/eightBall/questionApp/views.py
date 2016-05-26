@@ -67,7 +67,6 @@ def question_submit(request, id, answer):
 	return render(request, "question_submit.html", context)
 
 
-"""
 #Create a user account
 def new_user(request):
 	form = UserForm(request.POST or None, request.FILES or None)
@@ -80,8 +79,8 @@ def new_user(request):
 		"form":form
 	}
 	return render(request, "new_user.html", context)
-"""
-	
+
+		
 
 
 
