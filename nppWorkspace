@@ -38,6 +38,7 @@
                     <File name="eightBall\eightBall\templates\registration\login.html" />
                     <File name="eightBall\eightBall\templates\registration\register.html" />
                 </Folder>
+                <File name="eightBall\eightBall\templates\user_form.html" />
             </Folder>
             <Folder name="static">
                 <Folder name="css">

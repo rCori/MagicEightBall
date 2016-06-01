@@ -1,9 +1,15 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
-from .forms import QuestionForm
+from django.core.context_processors import csrf
+from .forms import QuestionForm, UserForm
 from .models import Question, Answered
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.contrib import auth
+
+
 
 # Create your views here.
 def question_index(request):
@@ -67,3 +73,24 @@ def question_submit(request, id, answer):
 		"queryRow": queryRow,
 	}
 	return render(request, "question_submit.html", context)
+	
+def login_view(request):
+	username = request.POST['username']
+	password = request.POST['password']
+	user = authenticate(username=username, password=password)
+	if user is not None:
+		if user.is_active:
+			login(request, user)
+			
+def logout_view(request):
+	logout(request)
+	
+def register_user(request):
+	if request.method == 'POST':
+		form = UserForm(request.POST)
+		if form.is_valid():
+			return HttpResponseRedirect('/questionApp/')
+	else:
+		form = UserForm()
+		
+	return render(request, "user_form.html", {'form':form})

@@ -1,0 +1,58 @@
+Auth system has:
+Users
+Permissions
+Handles secure passwords
+Forms and view "tools" for logging in users
+
+Bundled in Django app module django.contrib.auth. This app needs to be included for this to work.
+django.contrib.contenttypes gives you what you need to put permissions on models.
+
+These 3 things need to be in your MIDDLEWARE_CLASSES, this is in settings.py:
+SessionMiddleware
+AuthenticationMiddleware
+SessionAuthenticationMiddleware
+
+Everything hinges on the User object. Like a superuser is a User.
+You can create a User object with User.objects.create_user and then save()
+from django.contrib.auth.models import User
+#this creates a new user with first name=ryan, last name=cori,email=ryancori1@gmail.com, 
+#and password=favoritePasswordForRyan
+newUser = User.objects.create_user('ryan', 'ryancori1@gmail.com', 'favoritePasswordForRyan')
+newUser.last_name = 'cori'
+newUser.save()
+
+
+Helper functions set_password and authenticate are used to change a user's password and authenticate
+credentials.
+
+Permissions. Permissions are given to users per Model. A user can have add, change, and delete, permissions
+on any given model. Can also be given to groups of users.
+The permissions and groups a user has are both many-to-many fields.
+has_perm can be used to see if a user has a specific permission on a specific model
+For user "myUser" and and app with the label "myApp" and a model named "myTable": myUser.has_perm(myApp.add_myTable)
+will grant add persmissions of the myTable model to myUser by default. Migrate needs to be ran for this to work.
+
+User groups allow for permissions to be dealt with in groups of users.
+You can create a permission object programmatically or within a model's Meta class.
+
+Any request will have a user attribute. You can use this to check if a user is logged in like this:
+if request.user.is_authenticated():
+
+django.contrib.auth.login is a function to log a user in by a request and an authenticated user
+#request came passed in from the view
+#user came from a valid non-null call to authenticate
+login(request,user)
+
+You cannot request a user from the database directly, that is an error. You must use authenticate.
+On future requests, the user ID and authentication backend are used to authenticate and are saved in the
+user's current session so they do not need to log in repeatedly.
+
+logout works a lot like django.contrib.auth.login, only it doesn't need a user object, it just logs the
+current user out and it wont even throw an error if no user was logged in to begin with:
+from django.contrib.auth import logout
+def logout_view(request):
+	logout(request)
+
+You can limit access to logged in users two ways:
+1. Conditionals with request.user.is_authenticated()
+2. The built in login_required decorator

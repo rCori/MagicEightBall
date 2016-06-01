@@ -1,0 +1,11 @@
+<!-- question_present.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<form action="/questionApp/register/" method="post">{% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock content %}
