@@ -2,13 +2,13 @@ from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
-from .forms import QuestionForm, UserForm
+from .forms import *
 from .models import Question, Answered
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
-from django.contrib import auth
-
+from django.contrib.auth import authenticate,login,logout
+from django.views.decorators.csrf import csrf_protect
+from django.template import RequestContext
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -74,23 +74,51 @@ def question_submit(request, id, answer):
 	}
 	return render(request, "question_submit.html", context)
 	
-def login_view(request):
-	username = request.POST['username']
-	password = request.POST['password']
-	user = authenticate(username=username, password=password)
-	if user is not None:
-		if user.is_active:
-			login(request, user)
-			
-def logout_view(request):
-	logout(request)
-	
-def register_user(request):
+def logout_page(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
+def login_page(request):
 	if request.method == 'POST':
-		form = UserForm(request.POST)
-		if form.is_valid():
-			return HttpResponseRedirect('/questionApp/')
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect(reverse('index'))
+		else:
+			form = LoginForm()
+			variables = RequestContext(request, {'form': form, 'error':True})
+			return render_to_response('registration/login.html',variables)
 	else:
-		form = UserForm()
-		
-	return render(request, "user_form.html", {'form':form})
+		form = LoginForm()
+		variables = RequestContext(request, {'form': form, 'error':False})
+		return render_to_response('registration/login.html',variables)
+	
+@csrf_protect
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password1'],
+            email=form.cleaned_data['email']
+            )
+            return HttpResponseRedirect(reverse('register_success'))
+    else:
+        form = RegistrationForm()
+    variables = RequestContext(request, {
+    'form': form
+    })
+ 
+    return render_to_response(
+    'registration/register.html',
+    variables,
+    )
+ 
+def register_success(request):
+    return render_to_response(
+    'registration/success.html',
+    )
