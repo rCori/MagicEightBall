@@ -11,6 +11,7 @@ login_page,
 logout_page,
 register,
 register_success,
+user_profile,
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
 	url(r'^accounts/login/$', login_page, name='login_page'),
     url(r'^register/$', register, name='register'),
     url(r'^register/success/$', register_success, name='register_success'),
+	url(r'^userProfile/$', user_profile, name='user_profile'),
 ]

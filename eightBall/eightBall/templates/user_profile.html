@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ block.super }}
+
+<h3>Your Questions:</h3>
+
+{% for question in user_questions %}
+	<p>{{question.title}}</p>
+	<p>Yes answers: {{question.yesCount}}</p>
+	<p>No answers: {{question.noCount}}</p>
+	<br>
+{% endfor %}
+
+<h3>Your Answers:</h3>
+
+
+{% for answer in user_answers %}
+	<h3>{{answer.title}}</h3>
+	<p>Yes answers: {{answer.yesCount}}</p>
+	<p>No answers: {{answer.noCount}}</p>
+	<br>
+{% endfor %}
+
+{% endblock content %}

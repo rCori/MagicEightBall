@@ -10,14 +10,21 @@ def get_user_default_id():
 
 class QuestionManager(models.Manager):
 	#Gets a random row from the table
-	def random(self):
-		count = Question.objects.all().count()
-		if count == 0:
-			return None
+	def random(self, user=None):
+		if(user == None):
+			count = Question.objects.all().count()
+			if count == 0:
+				return None
+			else:
+				random_index = random.randint(0, count - 1)
+				return self.all()[random_index]
 		else:
-			random_index = random.randint(0, count - 1)
-			return self.all()[random_index]
-		
+			count = Question.objects.exclude(user=user).count()
+			if count == 0:
+				return None
+			else:
+				random_index = random.randint(0, count - 1)
+				return self.exclude(user=user)[random_index]
 		
 class Question(models.Model):
 	title = models.CharField(max_length=144)
@@ -30,9 +37,6 @@ class Question(models.Model):
 	
 	def __unicode__(self):
 		return self.title
-	
-	def get_absolute_url(self):
-		return reverse("posts:detail", kwargs={"slug": self.slug})
 
 
 	

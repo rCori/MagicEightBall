@@ -8,14 +8,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 # Create your views here.
 def question_index(request):
 	return render(request, "question_index.html")
 
-@login_required(login_url="login/")
+@login_required(login_url='/questionApp/accounts/login/')
 def question_create(request):
 	form = QuestionForm(request.POST or None, request.FILES or None)
 	#If the request is a POST then the form would be valid
@@ -33,9 +33,9 @@ def question_present(request, id=None):
 	#If no specific id is given get a random row
 	queryRow = 0
 	if id==None:
-		queryRow = Question.objects.random()
+		queryRow = Question.objects.random(request.user)
 		if queryRow == None:
-			raise Http404("There are no questions to show")
+			 return HttpResponse("<p>There are no questions you can answer</p>")
 	else:
 		queryRow = get_object_or_404(Question, id=id)
 	context = {
@@ -47,7 +47,6 @@ def question_present(request, id=None):
 
 #After a question is submitted we redirect to this view to let the user see the result
 def question_submit(request, id, answer):
-	#queryRow = Question.objects.get(id=id)
 	queryRow = get_object_or_404(Question, id=id)
 	if(answer == "yes"):
 		queryRow.yesCount = queryRow.yesCount + 1
@@ -64,7 +63,8 @@ def question_submit(request, id, answer):
 		insertRow = Answered(title=queryRow.title,
 							totalAnswers = queryRow.totalAnswers,
 							yesCount = queryRow.yesCount,
-							noCount = queryRow.noCount)
+							noCount = queryRow.noCount,
+							user = queryRow.user)
 		insertRow.save()
 		queryRow.delete()
 	
@@ -73,6 +73,29 @@ def question_submit(request, id, answer):
 		"queryRow": queryRow,
 	}
 	return render(request, "question_submit.html", context)
+
+@login_required(login_url='/questionApp/accounts/login/')
+def user_profile(request):
+	#If no specific id is given get a random row
+		
+	user_questions = None
+	try:
+		user_questions = Question.objects.filter(user=request.user).values()
+	except Question.DoesNotExist:
+		user_questions = None
+	
+	user_answers = None
+	try:
+		user_answers = Answered.objects.filter(user=request.user).values()
+	except Answered.DoesNotExist:
+		user_answers = None
+	
+	context = {
+		"user_questions": user_questions,
+		"user_answers": user_answers,
+	}
+	return render(request,"user_profile.html", context)
+	
 	
 def logout_page(request):
     logout(request)
@@ -90,11 +113,11 @@ def login_page(request):
 		else:
 			form = LoginForm()
 			variables = RequestContext(request, {'form': form, 'error':True})
-			return render_to_response('registration/login.html',variables)
+			return render(request,'registration/login.html',variables)
 	else:
 		form = LoginForm()
 		variables = RequestContext(request, {'form': form, 'error':False})
-		return render_to_response('registration/login.html',variables)
+		return render(request,'registration/login.html',variables)
 	
 @csrf_protect
 def register(request):
