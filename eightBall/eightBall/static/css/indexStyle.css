@@ -6,13 +6,9 @@ h1 {
  text-align: center;
 }
 
-.container {
-	background-color: green;
-	position: relative;
-    width: 100%;
-}
 
 a {
+	class: button;
 	position: relative;
     width: 100%;
 	padding: 60px;

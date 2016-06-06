@@ -5,26 +5,42 @@
 {% block content %}
 {{ block.super }}
 
-<link rel="stylesheet" type="text/css" href="{% static "css/indexStyle.css" %}">
 
-<h1> Home </h1>
+<div class="col-lg-12">
+<h3> Home </h3>
 
+<div class="container-fluid">
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<ul class="nav navbar-nav">
 {% if user.is_authenticated %}
-<a href={% url 'create' %}>Ask Question</a>
+<li>
+<a href={% url 'create' %} class="btn btn-default">Ask Question</a>
+</li>
 {% endif %}
-<a href={% url 'present' %}>Answer Question</a>
+<li>
+<a href={% url 'present' %} class="btn btn-default">Answer Question</a>
+</li>
 
 {% if user.is_authenticated %}
-<a href={% url 'logout_page' %}>logout</a>
+<li>
+<a href={% url 'logout_page' %} class="btn btn-default">logout</a>
+</li>
 {% else %}
-<a href={% url 'login_page' %}>login</a>
-<a href={% url 'register' %}>register</a>
+<li>
+<a href={% url 'login_page' %} class="btn btn-default">login</a>
+</li>
+<li>
+<a href={% url 'register' %} class="btn btn-default">register</a>
+</li>
 {% endif %}
 
 {% if user.is_authenticated %}
-<a href={% url 'user_profile' %}>View your questions</a>
+<li>
+<a href={% url 'user_profile' %} class="btn btn-default">View your questions</a>
+</li>
 {% endif %}
-
-
-
+</ul>
+</div>
+</div>
+</div>
 {% endblock content %}

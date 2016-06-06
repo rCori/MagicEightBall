@@ -33,7 +33,10 @@ def question_present(request, id=None):
 	#If no specific id is given get a random row
 	queryRow = 0
 	if id==None:
-		queryRow = Question.objects.random(request.user)
+		if not request.user.is_authenticated():
+			queryRow = Question.objects.random()
+		else:
+			queryRow = Question.objects.random(request.user)
 		if queryRow == None:
 			 return HttpResponse("<p>There are no questions you can answer</p>")
 	else:

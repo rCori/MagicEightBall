@@ -11,7 +11,7 @@ def get_user_default_id():
 class QuestionManager(models.Manager):
 	#Gets a random row from the table
 	def random(self, user=None):
-		if(user == None):
+		if user == None or user.is_authenticated():
 			count = Question.objects.all().count()
 			if count == 0:
 				return None
@@ -25,7 +25,9 @@ class QuestionManager(models.Manager):
 			else:
 				random_index = random.randint(0, count - 1)
 				return self.exclude(user=user)[random_index]
-		
+
+
+	
 class Question(models.Model):
 	title = models.CharField(max_length=144)
 	totalAnswers = models.IntegerField()

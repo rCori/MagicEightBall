@@ -2,16 +2,23 @@
 {% block title %}Login{% endblock %}
 {% block head %}Login{% endblock %}
 {% block content %}
+	<div class="col-lg-6">
+	<h3>Login</h3>
     {% if error %}
+		<div class="alert alert=dismissible alert-danger">
         <p>Your username and password didn't match. Please try again.</p>
+		</div>
     {% endif %}
-    <form method="post" action=".">{% csrf_token %}
+	<div class="well bs-component">
+    <form class="form-horizontal" method="post" action=".">{% csrf_token %}
         <table border="0">
-            <tr><th><label for="id_username">Username:</label></th><td>{{ form.username }}</td></tr>
-            <tr><th><label for="id_password">Password:</label></th><td>{{ form.password }}</td></tr>
+           {{form.as_p}}
         </table>
-        <input type="submit" value="Login" />
+        <input class="btn btn-primary" type="submit" value="Login" />
         <input type="hidden" name="next" value="/home" />
     </form>
-    <a href={% url 'register' %}>Register</a>
+	</div>
+	<a href={% url 'index' %} class="btn btn-default">Home</a>
+    <a href={% url 'register' %} class="btn btn-default">Register</a>
+	</div>
 {% endblock %}

@@ -37,6 +37,7 @@
                 <Folder name="registration">
                     <File name="eightBall\eightBall\templates\registration\login.html" />
                     <File name="eightBall\eightBall\templates\registration\register.html" />
+                    <File name="eightBall\eightBall\templates\registration\success.html" />
                 </Folder>
                 <File name="eightBall\eightBall\templates\user_form.html" />
                 <File name="eightBall\eightBall\templates\user_profile.html" />
